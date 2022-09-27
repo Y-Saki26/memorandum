@@ -178,7 +178,7 @@ cython_debug/
 
 # User
 *.bin
-SimpleNeuralNet-intro/criterion.pt
-SimpleNeuralNet-intro/history.json
-SimpleNeuralNet-intro/optimizer.pt
-SimpleNeuralNet-intro/params.pt
+SimpleNeuralNet-hands-on/criterion.pt
+SimpleNeuralNet-hands-on/history.json
+SimpleNeuralNet-hands-on/optimizer.pt
+SimpleNeuralNet-hands-on/params.pt
