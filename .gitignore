@@ -175,3 +175,10 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
+
+# User
+*.bin
+SimpleNeuralNet-intro/criterion.pt
+SimpleNeuralNet-intro/history.json
+SimpleNeuralNet-intro/optimizer.pt
+SimpleNeuralNet-intro/params.pt
