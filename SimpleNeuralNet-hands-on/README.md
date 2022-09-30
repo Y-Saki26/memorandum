@@ -1,4 +1,4 @@
-# SimpleNeuralNet-intro
+# SimpleNeuralNet-hands-on
 
 PyTorchでニューラルネットを組んで学習・評価ができるまで
 
