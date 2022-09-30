@@ -1,0 +1,22 @@
+min x s.t. one != x; eps = x-one: Binary Search
+Type                     :   Machine EPS,   EPS=2^-n, Type.Epsilon
+`UnityEngine.Vector2`    : 1.525879E-005,      16.00
+`UnityEngine.Vector3`    : 1.525879E-005,      16.00
+`UE.Vector2 .Equals`     : 1.192093E-007,      23.00
+`System.Numerics.Vector2`: 1.192093E-007,      23.00
+`System.Numerics.Vector3`: 1.192093E-007,      23.00
+`float`                  : 1.192093E-007,      23.00, 1.401298E-045
+`float` div2             : 1.192093E-007,      23.00, 1.401298E-045
+`float`                  : 2.220446E-016,      52.00, 4.940656E-324
+`Half`                   : 9.765625E-004,      10.00, 5.960464E-008
+`decimal`                : 1.000000E-028,      93.01
+min eps s.t. one != eps + one: Binary Search
+Type                     :   Machine EPS,   EPS=2^-n, Type.Epsilon
+`float`                  : 5.960464E-008,      24.00, 1.401298E-045
+`double`                 : 1.110223E-016,      53.00, 4.940656E-324
+`Half`                   : 4.882812E-004,      11.00, 5.960464E-008
+
+C:\Git\memorandum\MachineEpsilon\MachineEpsilon_csharp\bin\Debug\net6.0\MachineEpsilon_csharp.exe (プロセス 9820) は、コード 0 で終了しました。
+デバッグが停止したときに自動的にコンソールを閉じるには、[ツール] -> [オプション] -> [デバッグ] -> [デバッグの停止時に自
+動的にコンソールを閉じる] を有効にします。
+このウィンドウを閉じるには、任意のキーを押してください...
