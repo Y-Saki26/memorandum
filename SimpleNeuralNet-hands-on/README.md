@@ -27,4 +27,16 @@ conda env create -f=env_bak.yml
 ## 実行
 
 2値分類問題をニューラルネットで学習し，optunaでハイパーパラメータの最適化をする．
-実行コードは `skorch-test.ipynb` ．
+実行コードは [skorch-test.ipynb](https://github.com/Y-Saki26/memorandum/blob/main/SimpleNeuralNet-hands-on/skorch-hands-on.ipynb) ．
+
+コンテンツ
+
++ `sklearn.datasets.make_classification` による模擬データ生成
++ `nn.Module` を継承して定義したニューラルネットクラスを `skorch.NeuralNetClassifier` でラップして sklearn の Classifier のように扱う
+  + `fit` で学習
+  + 学習曲線の図示
+  + テストデータでの分類スコアの表示
+  + GPU の利用
+  + Classifier にパラメータを与える方法
++ Closs Validtion を行う場合の書き方
++ optuna を用いたハイパーパラメータ最適化
