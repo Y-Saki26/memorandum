@@ -9,3 +9,7 @@
 ## [MachineEpsilon](https://y-saki26.github.io/memorandum/MachineEpsilon/)
 
 Python と C# で計算機イプシロンの計算．
+
+## [MazeGenerator](https://y-saki26.github.io/memorandum/MazeGenerator)
+
+壁伸ばし法による迷路生成アルゴリズム．
