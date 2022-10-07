@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from enum import Enum
-#from dataclasses import dataclass
-from typing import Generic, TypeVar, Union, Generator, List, NamedTuple, Optional, Tuple
+from typing import Union, Generator, NamedTuple, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-Coord = Tuple[int, int]
+index = 0
+
 
 class Coordinate(NamedTuple):
     """
@@ -20,8 +20,8 @@ class Coordinate(NamedTuple):
     w : int
         width index
     """
-    h: T
-    w: T
+    h: int
+    w: int
 
     def __str__(self):
         return f"({self.h}, {self.w})"
@@ -37,7 +37,7 @@ class Coordinate(NamedTuple):
         else:
             return Coordinate(self.h * other.h, self.w * other.w)
 
-    def add_mul(self, other: Coordinate, mul: T = 1):
+    def add_mul(self, other: Coordinate, mul: int = 1):
         """
         add coordinates, right term multiplied by mul
 
@@ -68,7 +68,7 @@ class Directions(Enum):
 
 def random_maze(
         height: int, width: int,
-        random_state: Optional[int] = 42, verbose: bool = False
+        random_state: Optional[int] = 42, verbose: int = 0
 ) -> np.ndarray:
     """
     height x width のランダムな迷路を壁伸ばし法で作成
@@ -85,9 +85,13 @@ def random_maze(
         盤面の幅 (奇数)
     random_state: int | None, default=42
         random_state for numpy.random
-    verbose: bool, default=False
-        verbose output when True
-    
+    verbose : bool, defalt=0
+        toggle verbosity
+        * 0: no output
+        * 1: output text
+        * 2: show image
+        * 3: show and save image
+
     Returns
     -------
     maze : ndarray, shape=(height, width), dtype=int
@@ -98,6 +102,7 @@ def random_maze(
     ValueError
         * if height or width is not odd
     """
+    global index
     if not(height % 2 == 1 and width % 2 == 1):
         raise ValueError(
             f"maze size must be (odd, odd) but input is ({height}, {width})")
@@ -122,23 +127,29 @@ def random_maze(
 
         # 始点から始めて既存の壁に到達するまで壁を伸ばす
         start = candidates[np.random.randint(len(candidates))]
-        for cood in extend_wall(maze, start, verbose):
+        err, builded = extend_wall(maze, start, [start], verbose)
+        assert err == 1, "hoge"
+        for cood in builded:
             maze[cood] = 1
 
-        if verbose:
+        if verbose > 0:
+            print("main loop:", index)
+        if verbose > 1:
             # 生成途中の図を出力
-            print("main loop:")
             show_maze(maze)
+            if verbose > 2:
+                # 図を保存
+                plt.savefig(f"img{index:04}.png")
             plt.show()
+        index += 1
     return maze
 
 
 def extend_wall(
-        maze: np.ndarray, start: Coordinate,
-        verbose: bool = False
-        ) -> list[Coordinate]:
-    if verbose:
-        print("extend start with:", start)
+        maze: np.ndarray, curr: Coordinate,
+        building: list[Coordinate],
+        verbose: int = 0
+) -> tuple[int, list[Coordinate]]:
     """
     始点から始めて既存の壁に到達するまで壁を伸ばす
 
@@ -146,69 +157,117 @@ def extend_wall(
     ----------
     maze : ndarray, shape=(height, width), dtype=int
         現時点での迷路
-    start: Coordinate
+    curr : Coordinate
         始点
-    verbose : bool, defalt=False
-        verbose output when True
+    building : list[Coordinate]
+        生成中の座標リスト
+    verbose : bool, defalt=0
+        toggle verbosity
+        * 0: no output
+        * 1: output text
+        * 2: show image
+        * 3: show and save image
 
     Returns
     -------
-    building : list[Coordinate]
+    err : int
+        壁を生成できたら 1，行き止まりなら -1
+    builded : list[Coordinate]
         始点から既存の壁にたどり着くまでに新たに作った壁の座標リスト
     """
+    global index
     # 進める方向をランダムに選び，2マスずつ進む．
     # 既存の壁にたどり着いたら完了
-    # 自分にぶつかるようなら戻ってやり直す: ここの実装は再帰でやるべき
-    curr: Coordinate = start
-    building: list[Coordinate] = [start]
-    failed: list[Coordinate] = []
-    while True:
-        *dirs, = search_visitable_dir(maze, curr, building, failed)
-        if dirs == []:
-            failed.append(curr)
-            curr = building.pop()
+    # 自分にぶつかるようなら戻ってやり直す
+    if verbose > 0:
+        print("extending with:", curr, index)
+    if verbose > 1:
+        # 生成途中の図を出力
+        maze2: np.ndarray = maze.copy().astype(float)
+        for pos in building:
+            maze2[pos] = 0.5
+        maze2[curr] = 0.75
+        show_maze(maze2)
+        if verbose > 2:
+            # 図を保存
+            plt.savefig(f"img{index:04}.png")
+        plt.show()
+    
+    index += 1
+    *dirs, = search_acceptable_dir(maze, curr, building)
+    if dirs == []:
+        err, builded = -1, building
+    else:
+        n = len(dirs)
+        for idir in np.random.choice(range(n), n, False):
+            # 次に進む方向を進める中からランダムに決める
+            dir = dirs[idir]
+            next = curr.add_mul(dir, 2)
+            if maze[next] == 1:
+                # 2つ進んだ先が既存の壁なら生成を完了して返す
+                err, builded = (1, building+[curr+dir])
+                break
+            else:
+                # 2つ先が空いた空間なら生成を続ける
+                err, builded = extend_wall(
+                    maze, next, building+[curr+dir, next], verbose)
+                if err == 1:
+                    break
         else:
-            n = len(dirs)
-            dir = dirs[np.random.randint(n)]
-            building.append(curr + dir)
-            if maze[curr.add_mul(dir, 2)] == 1:
-                # print(building_stack)
-                return building
-            curr = curr.add_mul(dir, 2)
-            building.append(curr)
+            err, builded = (-1, building)
 
-        if verbose:
-            # 生成途中の図を出力
-            maze2:np.ndarray = maze.copy().astype(float)
+    if verbose > 0:
+        print("extend:" if err == 1 else "back:", index)
+    if verbose > 1:
+        # 生成途中の図を出力
+        maze2: np.ndarray = maze.copy().astype(float)
+        if err == 1:
+            for pos in builded:
+                maze2[pos] = 0.25
             for pos in building:
                 maze2[pos] = 0.5
-            maze2[start] = 0.75
-            print("2:")
-            show_maze(maze2)
-            plt.show()
+            maze2[curr] = 0.75
+        else:
+            for pos in builded:
+                maze2[pos] = 0.5
+            maze2[curr] = 0.75
+        show_maze(maze2)
+        if verbose > 2:
+            # 図を保存
+            plt.savefig(f"img{index:04}.png")
+        plt.show()
+    index += 1
+    return (err, builded)
 
-def search_visitable_dir(
+
+def search_acceptable_dir(
         maze: np.ndarray, curr: Coordinate,
-        building_stack: list[Coordinate], failed: List[Coordinate]
+        building: list[Coordinate]
 ) -> Generator[Coordinate, None, None]:
     """
     以下の条件を満たす方向を探す
     * 進んだ先が既存の壁ではない
     * 進んだ先が生成中の壁ではない
-    * 進んだ先が既に失敗した座標ではない
     * 2つ進んだ先が生成中の壁ではない
 
     Parameters
     ----------
+    maze : ndarray, shape=(height, width)
+        これまでに生成された壁が記録されたmap
+    curr : Coordinate
+        現在の座標
+    building : list[Coordinate]
+        生成途中の座標リスト
 
-    Returns
-    -------
+    Yields
+    ------
+    dir : Coordinate
+        次の行き先として適切な方向
     """
     for dir in Directions:
         if maze[curr + dir.value] == 0\
-                and curr + dir.value not in building_stack\
-                and curr + dir.value not in failed\
-                and curr.add_mul(dir.value, 2) not in building_stack:
+                and curr + dir.value not in building\
+                and curr.add_mul(dir.value, 2) not in building:
             yield dir.value
 
 
@@ -217,7 +276,25 @@ def show_maze(
         height: int = 7, width: int = 9,
         random_state: Optional[int] = None,
         cmap: str = 'Greens',
-        verbose: bool = False):
+        verbose: int = 0
+):
+    """
+    set parameters and show image of maze
+
+    Parameters
+    ----------
+    maze : ndarray, optional, default=None
+    height : int
+    width : int
+    random_state : int, optional, default=None
+    cmap : str, default='Greens'
+    verbose : bool, defalt=0
+        toggle verbosity
+        * 0: no output
+        * 1: output text
+        * 2: show image
+        * 3: show and save image
+    """
     if maze is None:
         maze = random_maze(height, width, random_state, verbose)
     plt.rcParams['image.cmap'] = cmap
@@ -226,6 +303,5 @@ def show_maze(
     plt.imshow(maze)
 
 
-show_maze(None, 9, 11, 5, verbose=False)
+show_maze(None, 9, 11, 5, verbose=2)
 plt.show()
-# random_maze(5,7)
