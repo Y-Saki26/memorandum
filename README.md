@@ -6,6 +6,10 @@
 
 2値分類問題をニューラルネットで学習し，optunaでハイパーパラメータの最適化をするまで．
 
+## [MatInterp](https://y-saki26.github.io/memorandum/MatInterp/)
+
+ニューラルネットを用いて3次元曲面補間を行うアプリケーション [MatInterp](https://github.com/kensei-te/mat_interp) を導入し適当な問題で動かせるようする．
+
 ## [MachineEpsilon](https://y-saki26.github.io/memorandum/MachineEpsilon/)
 
 Python と C# で計算機イプシロンの計算．

@@ -196,4 +196,4 @@ chmod 600 config.ini
 あくまで入力データを学習した補間に過ぎないので，基本的に外挿はできないものとして扱い，結果が正しいかどうかは良く吟味するべきである．
 図7では入力データ外の $X_1<10$ の領域では $X_2$ が大きい領域のデータに引きずられてしまっている．
 
-出典： K. Terashima, et al. "Neural Networks for a Quick Access to a Digital Twin of Scanning Physical Properties Measurements." arXiv, June 22, 2022. https://doi.org/10.48550/arXiv.2206.10908.
+出典： K. Terashima, et al. "Neural Networks for a Quick Access to a Digital Twin of Scanning Physical Properties Measurements." arXiv, June 22, 2022. [https://doi.org/10.48550/arXiv.2206.10908](https://doi.org/10.48550/arXiv.2206.10908).
