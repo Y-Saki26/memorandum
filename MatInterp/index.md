@@ -1,6 +1,5 @@
 ---
-date: 2022-09-27
-lastmod: 2022-10-18
+date: 2022-10-17
 ---
 
 {% include_relative README.md %}
