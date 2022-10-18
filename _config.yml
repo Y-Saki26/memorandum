@@ -1,15 +1,14 @@
-title: Y. Sakishita
+title: memorandum
 lang: ja
 url: https://y-saki26.github.io
-tagline: Website of Y. Sakishita
-description: Website summarizing Yuki Sakishita's achievements
+description: 備忘録(公開用)
 author:
   name: Yuki Sakishita
   url: https://y-saki26.github.io
 twitter:
   username: UndercapeY
   card: summary
-logo: /assets/img/favicon_temporary.jpg
+logo: https://y-saki26.github.io/pages/assets/img/favicon_temporary.jpg
 google_site_verification: Ox5gxPoyK55bmXwER1X9Y3rVrA9StwWIaERDPJRkfJg
 google_analytics: G-65XGBRY6HB
 show_downloads: false
