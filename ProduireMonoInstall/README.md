@@ -13,9 +13,9 @@ monoをインストールし，プロデルの実行ファイルを展開しま�
 
 ※注：
 
-* 最初の4行は[mono公式のダウンロードページ](https://www.mono-project.com/download/stable/#download-lin)の記載に従う．以下は Ubuntu 20.04 用．
+* 最初の4行は[mono公式のダウンロードページ](https://www.mono-project.com/download/stable/#download-lin)の記載に従う．以下は Ubuntu 20.04 用．バージョンが上な分には問題ないはず．
 現在のmono版プロデルは Mono6.12 向けなのでバージョンを指定しておく[^ver]
-* GUI関係の機能のため？ libgtk2.0-dev のモジュールがないと警告が出るため一緒にインストールしておく．
+* GUI関係の機能のため？[^gtk] libgtk2.0-dev のモジュールがないと警告が出るため一緒にインストールしておく．
 * 以下ではプロデルが "`./produire-mono/`" に展開されるがお好みで変更可．
 
 ```sh
@@ -94,7 +94,7 @@ mono produire-mono/Main.exe
 
 ## アンインストール
 
-mono関連のパッケージをアンインストールする．
+mono関連のパッケージをアンインストールする．（参考：[How to Completely remove mono?](https://askubuntu.com/questions/644938/how-to-completely-remove-mono)）
 
 ```sh
 sudo apt-get purge -y mono-runtime mono-devel libgtk2.0-dev
@@ -116,5 +116,7 @@ rm -r produire-mono/
 ```
 
 [^ver]: 現時点では 6.12 が最新なので何も指定しなくても 6.12 がインストールされる
+
+[^gtk]: "Gtk not found (missing LD_LIBRARY_PATH to libgtk-x11-2.0.so.0?)" という警告が実行時に出る．一応動くが邪魔なので対応しておく．（参考：[Ubuntuでlibgtk-x11-2.0.so.0を追加するには](https://ja.stackoverflow.com/questions/44290/ubuntu%E3%81%A7libgtk-x11-2-0-so-0%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF)）
 
 [^null]: "`> /dev/null`" の部分は標準出力を握り潰してエラー出力だけにするためのもの．不要なら無くてよい．
