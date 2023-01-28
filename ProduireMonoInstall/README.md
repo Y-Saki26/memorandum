@@ -3,7 +3,7 @@
 日本語プログラミング言語「プロデル」は，メインの実装が .NET Framework ベースであり Windows 向けの機能が充実していますが，[mono版も提供されている](https://rdr.utopiat.net/files/mono.html)ため，他のシステムでも利用できます．
 基本的に公式ページの説明通りにやれば導入すれば問題ないですが，若干いじったところもあるため初心者の方でも利用しやすいよう，導入からアンインストールまでの流れをまとめておきます．
 
-2023/01/28 現在の情報です．
+**2023/01/28 現在**の情報です．
 動作確認は WSL2 の Ubuntu 22.04.1 LTS で行っています．
 環境によって（特にmonoのインストールについて）ちょいちょいコマンドが変わるので公式ページを確認して該当部分をすげ替えてください．
 
@@ -16,7 +16,7 @@ monoをインストールし，プロデルの実行ファイルを展開しま�
 * 最初の4行は[mono公式のダウンロードページ](https://www.mono-project.com/download/stable/#download-lin)の記載に従う．以下は Ubuntu 20.04 用．
 現在のmono版プロデルは Mono6.12 向けなのでバージョンを指定しておく[^ver]
 * GUI関係の機能のため？ libgtk2.0-dev のモジュールがないと警告が出るため一緒にインストールしておく．
-* 以下ではプロデルが `./produire-mono/` に展開されるがお好みで変更可．
+* 以下ではプロデルが "`./produire-mono/`" に展開されるがお好みで変更可．
 
 ```sh
 # install mono
@@ -34,7 +34,8 @@ tar zxvf produire-mono.tar.gz
 rm produire-mono.tar.gz
 ```
 
-ファイルに保存して `bash install_produire.sh > /dev/null` [^null] のようにバッチ実行すればノータッチで最後まで終わるはず．
+ファイルに保存して "`bash install_produire.sh > /dev/null`" [^null] のようにバッチ実行すればノータッチで最後まで終わるはず．
+[GitHub](https://github.com/Y-Saki26/memorandum/tree/main/ProduireMonoInstall) にファイルを置いておくので参考にされたい．（そのまんま上記のコマンドが書いてあるだけ）
 
 ### バージョン指定
 
@@ -71,7 +72,7 @@ mono hello.exe
 ## 実行
 
 実行時に DLL ファイルが必要なためコンパイラなどと同じディレクトリに実行ファイルを置きます．
-上記通りだとコマンドを実行したディレクトリの下の `produire-mono/` の中．
+上記通りだとコマンドを実行したディレクトリの下の "`produire-mono/`" の中．
 
 コンソールアプリをコンパイルして実行する例（[プロデル公式](https://rdr.utopiat.net/files/mono.html)より）．
 
@@ -93,18 +94,22 @@ mono produire-mono/Main.exe
 
 ## アンインストール
 
+mono関連のパッケージをアンインストールする．
+
 ```sh
 sudo apt-get purge -y mono-runtime mono-devel libgtk2.0-dev
 sudo apt-get autoremove -y
 ```
 
-消えたか確認
+消えたか確認：
 
 ```sh
 apt list --installed | grep -E "^mono"
 ```
 
-プロデルの削除はフォルダを消すだけ
+何も出てこなければOK．
+
+プロデルの削除はフォルダを消すだけ．
 
 ```sh
 rm -r produire-mono/
@@ -112,4 +117,4 @@ rm -r produire-mono/
 
 [^ver]: 現時点では 6.12 が最新なので何も指定しなくても 6.12 がインストールされる
 
-[^null]: `> /dev/null` の部分は標準出力を握り潰してエラー出力だけにするためのもの．不要なら無くてよい．
+[^null]: "`> /dev/null`" の部分は標準出力を握り潰してエラー出力だけにするためのもの．不要なら無くてよい．
